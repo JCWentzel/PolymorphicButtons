@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map for Polymorphic Buttons
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PMButton	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+held	KEYWORD2
+heldLong	KEYWORD2
+clicked	KEYWORD2
+doubleClicked	KEYWORD2
+pressed	KEYWORD2
+released	KEYWORD2
+debounce	KEYWORD2
+dcGap	KEYWORD2
+holdTime	KEYWORD2
+longHoldTime	KEYWORD2

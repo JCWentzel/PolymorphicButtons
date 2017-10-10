@@ -17,7 +17,6 @@
   <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------*/
 
-
 #include "PMButton.h"
 
 PMButton::PMButton(int pinNum)
@@ -45,6 +44,8 @@ bool PMButton::held(){return _held;}
 bool PMButton::heldLong(){return _heldLong;}
 bool PMButton::clicked(){return _clicked;}
 bool PMButton::doubleClicked(){return _doubleClicked;}
+bool PMButton::pressed(){return _pressed;}
+bool PMButton::released(){return _released;}
 
 void PMButton::checkSwitch()
 { 
@@ -53,6 +54,8 @@ void PMButton::checkSwitch()
   _heldLong = false;
   _clicked = false;
   _doubleClicked = false;
+  _pressed = false;
+  _released = false;
    
   _currentstate = digitalRead(_pinNum);// read the button
   
@@ -65,6 +68,8 @@ void PMButton::checkSwitch()
     _singleOK = true;
     _holdEventPast = false;
     _longHoldEventPast = false;
+    _pressed = true;
+    _released = false;
     
     if ((millis()- _upTime) > (_dcGap*2))
     {
@@ -74,7 +79,7 @@ void PMButton::checkSwitch()
     if ((millis()- _upTime) < _dcGap && !_dcOnUp && _dcWaiting && !_doubleClickedEventPast)
     {
       _dcOnUp = true;
-      //Serial.println("Boom!");
+      _pressed = false;
     }
     else
     {
@@ -86,6 +91,8 @@ void PMButton::checkSwitch()
   // Button released
   else if ((_currentstate == HIGH) && (_previousstate == LOW) && (millis() - _downTime) > _debounce && !_doubleClickedEventPast)
   {
+    _released = true;
+
     if (not _ignoreUp)
     {
       _upTime = millis();
@@ -109,7 +116,6 @@ void PMButton::checkSwitch()
   {
     _clicked = true;
     _dcWaiting = false;
-    //Serial.println("clicked!");
   }
   
   // Test for hold

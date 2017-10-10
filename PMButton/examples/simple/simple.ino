@@ -34,6 +34,11 @@ void useButonCheck()
   if(button1.clicked()){Serial.println("button1 Just clicked.");}
   
   if(button1.doubleClicked()){Serial.println("button1 Just double clicked!");}
+
+  //These are commented out as they fire often and make the Serial output a bit messy to look at
+  
+  //if(button1.pressed()){Serial.println("button1 Just pressed!");}
+  //if(button1.released()){Serial.println("button1 Just released!");}
   
   //Button2
   if(button2.held()){Serial.println("button2 was held.");}
