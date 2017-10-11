@@ -6,8 +6,8 @@ Detectable types of button presses:
 * Double Clicked
 * Short Hold
 * Long Hold
-* pressed
-* released
+* Pressed
+* Released
 
 ## Simple example
 Here is a basic example of how to use the library:
