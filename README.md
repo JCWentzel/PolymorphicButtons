@@ -1,11 +1,13 @@
 # PolymorphicButtons
-A simple Arduino library to make multi-function buttons.
-There are many button libraries out there, all with their virtues, this one is meant to be very simple and easy to use. Each button has 4 states:
+An easy to use library which allows for simple setup of debouncing multifunction buttons. PMButtons is setup using the internal pullup resistors for simple wiring, see the example below.
 
+Detectable types of button presses:
 * Clicked
 * Double Clicked
 * Short Hold
 * Long Hold
+* pressed
+* released
 
 ## Simple example
 Here is a basic example of how to use the library:
@@ -19,6 +21,9 @@ Here is a basic example of how to use the library:
 		button1.checkSwitch();
 		if(button1.clicked()){Serial.println("button1 Just clicked.");}
 	}
+	
+Wiring Diagram for the example scketch, no external resistors needed.
+![Wiring with internal pullup resistor](https://github.com/JCWentzel/PolymorphicButtons/raw/Images/Images/PMButtons_bb.png)
 
 ## Additional Settings
 Each button can be fine-tuned by using the following settings: 
