@@ -29,8 +29,8 @@ void PMButton::begin()
   pinMode(_pinNum, INPUT);
   digitalWrite(_pinNum, HIGH);
   
-  _downTime = -1;
-  _upTime = -1;
+  _downTime = 0;
+  _upTime = 0;
 }
 
 //Set Button Values
