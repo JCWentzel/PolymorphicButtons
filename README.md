@@ -9,8 +9,8 @@ Detectable types of button presses:
 * Pressed (just one event, after debouncing time)
 * Released (after releasing the button and debounce time)
 * IsPressed (after debounce time, but stays true as long as the button is Pressed)
-* IsHold (is true as long as the button is Pressed after the Short Hold event)
-* IsHoldLong (is true as long as the button is Pressed after the Long Hold event)
+* IsHeld (is true as long as the button is Pressed after the Short Hold event)
+* IsHeldLong (is true as long as the button is Pressed after the Long Hold event)
 
 ## Simple example
 Here is a basic example of how to use the library:
