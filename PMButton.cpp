@@ -41,7 +41,9 @@ void PMButton::longHoldTime(long value){_longHoldTime = value;}
 
 //Return Button State
 bool PMButton::held(){return _held;}
+bool PMButton::isHeld(){return _isHeld;}
 bool PMButton::heldLong(){return _heldLong;}
+bool PMButton::isHeldLong(){return _isHeldLong;}
 bool PMButton::clicked(){return _clicked;}
 bool PMButton::doubleClicked(){return _doubleClicked;}
 bool PMButton::pressed(){return _pressed;}
@@ -59,7 +61,7 @@ void PMButton::checkSwitch()
   _isPressed = false;
   _released = false;
  
- unsigned long _timeNow = millis (); //to syncronise the timing in this button object
+  unsigned long _timeNow = millis (); //to syncronise the timing in this button object
    
   _currentstate = digitalRead(_pinNum);// read the button
   
@@ -74,6 +76,8 @@ void PMButton::checkSwitch()
     _longHoldEventPast = false;
     _pressed = true;
     _released = false;
+    _isHeld = false;
+    _isHeldLong = false;
     
     if ((_timeNow- _upTime) > (_dcGap*2))
     {
@@ -96,6 +100,8 @@ void PMButton::checkSwitch()
   else if ((_currentstate == HIGH) && (_previousstate == LOW) && (_timeNow - _downTime) > _debounce && !_doubleClickedEventPast)
   {
     _released = true;
+    _isHeld = false;
+    _isHeldLong = false;
 
     if (not _ignoreUp)
     {
@@ -129,6 +135,7 @@ void PMButton::checkSwitch()
     if (not _holdEventPast)
     {
       _held = true;
+      _isHeld = true;
       _waitForUp = true;
       _ignoreUp = true;
       _dcOnUp = false;
@@ -142,6 +149,7 @@ void PMButton::checkSwitch()
       if (not _longHoldEventPast)
       {
         _heldLong = true;
+        _isHeldLong = true;
         _longHoldEventPast = true;
       }
     }
