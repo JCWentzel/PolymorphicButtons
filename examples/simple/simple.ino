@@ -40,6 +40,10 @@ void useButonCheck()
   //if(button1.pressed()){Serial.println("button1 Just pressed!");}
   //if(button1.released()){Serial.println("button1 Just released!");}
   
+  //if(button1.isPressed()){Serial.println("button1 Is actualy pressed!");}
+  //if(button1.isHeld()){Serial.println("button1 Is actualy held for a short time!");}
+  //if(button1.isHeldLong()){Serial.println("button1 Is actualy held for a long time!");}
+  
   //Button2
   if(button2.held()){Serial.println("button2 was held.");}
   
