@@ -31,7 +31,7 @@ class PMButton
   void begin();
   void debounce(long value), dcGap(long value), holdTime(long value), longHoldTime(long value);
   //status
-  bool held(), heldLong(), clicked(), doubleClicked(), pressed(), isPressed (), released();
+  bool held(), isHeld(), heldLong(), isHeldLong(), clicked(), doubleClicked(), pressed(), isPressed (), released();
   //update button status
   void checkSwitch();
   
@@ -44,10 +44,10 @@ class PMButton
   long _longHoldTime = 5000; // ms hold period: how long to wait for the long press+hold event
 
   //states
-  bool _held, _heldLong, _clicked, _doubleClicked, _pressed, _isPressed, _released, _dcWaiting, _dcOnUp, _singleOK, _ignoreUp, _waitForUp, _holdEventPast, _longHoldEventPast, _doubleClickedEventPast, _previousstate, _currentstate;
+  bool _held, _isHeld ,_heldLong, _isHeldLong, _clicked, _doubleClicked, _pressed, _isPressed, _released, _dcWaiting, _dcOnUp, _singleOK, _ignoreUp, _waitForUp, _holdEventPast, _longHoldEventPast, _doubleClickedEventPast, _previousstate, _currentstate;
   
   //Timing variables 
-  long _downTime, _upTime;
+  unsigned long _downTime, _upTime;
 };
 
 #endif
