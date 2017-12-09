@@ -150,11 +150,11 @@ void PMButton::checkSwitch()
   // Test for isPressed
   if ((_currentstate == LOW) && ((_timeNow - _upTime) > _debounce))
   {
-    _ispressed = true;
+    _isPressed = true;
   }
   else
   {
-    _ispressed = false;
+    _isPressed = false;
   }
   
   _previousstate = _currentstate;
