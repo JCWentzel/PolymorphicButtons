@@ -36,12 +36,12 @@ class PMButton
   void checkSwitch();
   
   private:
-  //setup
+  //setup defaults in PMButton.cpp (constructor)
   int _pinNum; // The Button Pin
-  long _debounce = 10; // ms debounce period to prevent flickering when pressing or releasing the button
-  long _dcGap = 200; // max ms between clicks for a double click event
-  long _holdTime = 2000; // ms hold period: how long to wait for press+hold event
-  long _longHoldTime = 5000; // ms hold period: how long to wait for the long press+hold event
+  long _debounce; // ms debounce period to prevent flickering when pressing or releasing the button
+  long _dcGap; // max ms between clicks for a double click event
+  long _holdTime; // ms hold period: how long to wait for press+hold event
+  long _longHoldTime; // ms hold period: how long to wait for the long press+hold event
 
   //states
   bool _held, _isHeld ,_heldLong, _isHeldLong, _clicked, _doubleClicked, _pressed, _isPressed, _released, _dcWaiting, _dcOnUp, _singleOK, _ignoreUp, _waitForUp, _holdEventPast, _longHoldEventPast, _doubleClickedEventPast, _previousstate, _currentstate;

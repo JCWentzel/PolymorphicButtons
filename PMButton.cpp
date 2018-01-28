@@ -22,6 +22,10 @@
 PMButton::PMButton(int pinNum)
 {
   _pinNum = pinNum;
+  _debounce = 10; // ms debounce period to prevent flickering when pressing or releasing the button
+  _dcGap = 200; // max ms between clicks for a double click event
+  _holdTime = 2000; // ms hold period: how long to wait for press+hold event
+  _longHoldTime = 5000; // ms hold period: how long to wait for the long press+hold event
 }
 
 void PMButton::begin()
