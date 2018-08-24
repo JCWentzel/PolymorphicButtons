@@ -2,12 +2,15 @@
 An easy to use library which allows for simple setup of debouncing multifunction buttons. PMButtons is setup using the internal pullup resistors for simple wiring, see the example below.
 
 Detectable types of button presses:
-* Clicked
-* Double Clicked
-* Short Hold
-* Long Hold
-* Pressed
-* Released
+* Clicked (just one time after Pressed and Released)
+* Double Clicked (Clicked twice in a given timeframe)
+* Short Hold (hold for a given timeframe)
+* Long Hold (like Short Hold but longer timeframe)
+* Pressed (just one event, after debouncing time)
+* Released (after releasing the button and debounce time)
+* IsPressed (after debounce time, but stays true as long as the button is Pressed)
+* IsHeld (is true as long as the button is Pressed after the Short Hold event)
+* IsHeldLong (is true as long as the button is Pressed after the Long Hold event)
 
 ## Simple example
 Here is a basic example of how to use the library:

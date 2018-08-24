@@ -22,6 +22,10 @@
 PMButton::PMButton(int pinNum)
 {
   _pinNum = pinNum;
+  _debounce = 10; // ms debounce period to prevent flickering when pressing or releasing the button
+  _dcGap = 200; // max ms between clicks for a double click event
+  _holdTime = 2000; // ms hold period: how long to wait for press+hold event
+  _longHoldTime = 5000; // ms hold period: how long to wait for the long press+hold event
 }
 
 void PMButton::begin()
@@ -29,8 +33,8 @@ void PMButton::begin()
   pinMode(_pinNum, INPUT);
   digitalWrite(_pinNum, HIGH);
   
-  _downTime = -1;
-  _upTime = -1;
+  _downTime = 0;
+  _upTime = 0;
 }
 
 //Set Button Values
@@ -41,10 +45,13 @@ void PMButton::longHoldTime(long value){_longHoldTime = value;}
 
 //Return Button State
 bool PMButton::held(){return _held;}
+bool PMButton::isHeld(){return _isHeld;}
 bool PMButton::heldLong(){return _heldLong;}
+bool PMButton::isHeldLong(){return _isHeldLong;}
 bool PMButton::clicked(){return _clicked;}
 bool PMButton::doubleClicked(){return _doubleClicked;}
 bool PMButton::pressed(){return _pressed;}
+bool PMButton::isPressed(){return _isPressed;}
 bool PMButton::released(){return _released;}
 
 void PMButton::checkSwitch()
@@ -55,14 +62,17 @@ void PMButton::checkSwitch()
   _clicked = false;
   _doubleClicked = false;
   _pressed = false;
+  _isPressed = false;
   _released = false;
+ 
+  unsigned long _timeNow = millis (); //to syncronise the timing in this button object
    
   _currentstate = digitalRead(_pinNum);// read the button
   
   // Button pressed down
-  if ((_currentstate == LOW) && (_previousstate == HIGH) && ((millis() - _upTime) > _debounce))
+  if ((_currentstate == LOW) && (_previousstate == HIGH) && ((_timeNow - _upTime) > _debounce))
   {
-    _downTime = millis();
+    _downTime = _timeNow;
     _ignoreUp = false;
     _waitForUp = false;
     _singleOK = true;
@@ -70,13 +80,15 @@ void PMButton::checkSwitch()
     _longHoldEventPast = false;
     _pressed = true;
     _released = false;
+    _isHeld = false;
+    _isHeldLong = false;
     
-    if ((millis()- _upTime) > (_dcGap*2))
+    if ((_timeNow- _upTime) > (_dcGap*2))
     {
       _doubleClickedEventPast = false;
     }
     
-    if ((millis()- _upTime) < _dcGap && !_dcOnUp && _dcWaiting && !_doubleClickedEventPast)
+    if ((_timeNow- _upTime) < _dcGap && !_dcOnUp && _dcWaiting && !_doubleClickedEventPast)
     {
       _dcOnUp = true;
       _pressed = false;
@@ -89,13 +101,15 @@ void PMButton::checkSwitch()
   }
   
   // Button released
-  else if ((_currentstate == HIGH) && (_previousstate == LOW) && (millis() - _downTime) > _debounce && !_doubleClickedEventPast)
+  else if ((_currentstate == HIGH) && (_previousstate == LOW) && (_timeNow - _downTime) > _debounce && !_doubleClickedEventPast)
   {
     _released = true;
+    _isHeld = false;
+    _isHeldLong = false;
 
     if (not _ignoreUp)
     {
-      _upTime = millis();
+      _upTime = _timeNow;
       if (!_dcOnUp)
       {
         _dcWaiting = true;
@@ -112,19 +126,20 @@ void PMButton::checkSwitch()
   }
   
   // Test for normal click event: _dcGap expired
-  if ( _currentstate == HIGH && (millis() - _upTime) >= _dcGap && _dcWaiting && !_dcOnUp && _singleOK )
+  if ( _currentstate == HIGH && (_timeNow - _upTime) >= _dcGap && _dcWaiting && !_dcOnUp && _singleOK )
   {
     _clicked = true;
     _dcWaiting = false;
   }
   
   // Test for hold
-  if (_currentstate == LOW && (millis() - _downTime) >= _holdTime)
+  if (_currentstate == LOW && (_timeNow - _downTime) >= _holdTime)
   {
     // Trigger "normal" hold
     if (not _holdEventPast)
     {
       _held = true;
+      _isHeld = true;
       _waitForUp = true;
       _ignoreUp = true;
       _dcOnUp = false;
@@ -133,14 +148,25 @@ void PMButton::checkSwitch()
     }
     
     // Trigger "long" hold
-    if ((millis() - _downTime) >= _longHoldTime)
+    if ((_timeNow - _downTime) >= _longHoldTime)
     {
       if (not _longHoldEventPast)
       {
         _heldLong = true;
+        _isHeldLong = true;
         _longHoldEventPast = true;
       }
     }
+  }
+ 
+  // Test for isPressed
+  if ((_currentstate == LOW) && ((_timeNow - _upTime) > _debounce))
+  {
+    _isPressed = true;
+  }
+  else
+  {
+    _isPressed = false;
   }
   
   _previousstate = _currentstate;
